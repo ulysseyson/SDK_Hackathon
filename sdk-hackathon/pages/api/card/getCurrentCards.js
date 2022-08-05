@@ -13,36 +13,45 @@ export default async (req, res) => {
       where: { userId: DBUser.id },
     });
 
-    console.log(session);
-    
-    const newData = DBSession;
-    const cards = []
+    const cards = [];
 
-    if (!newData.isPlaying){
-        newData.isPlaying = true;
+    const newData = {
+      isPlaying: true,
+      turnNo: DBSession.turnNo,
+      cards: DBSession.cards,
+    };
+
+    var i = 0;
+
+    const allCards = await prisma.Card.findMany({});
+    const allCardsIds = allCards.map(card => card.cID);
+    const cardCIDMin = allCardsIds[0];
+    const cardCIDMax = allCardsIds[allCardsIds.length - 1];
+
+    while (i < 3) {
+      var cardNo = rand(cardCIDMin, cardCIDMax);
+      var card = await prisma.Card.findFirst({ where: { cID: cardNo } });
+      card.sessionId = DBUser.id;
+      cards.push(card.cID);
+      i++;
     }
-    var i = 0
-        while(i < 3) {
-            var cardNo = rand(1, 1000);
-            var card = await prisma.Card.findFirst({ where: {cID: cardNo}});
-            card.sessionId = DBUser.id;
-            cards.push(card.cID);
-            i++;
-        }
-        newData.turnNo += 1;
-        newData.cards = cards;
-        newData.cards = { connect: newData.cards };
+    newData.turnNo += 1;
+    newData.cards = cards.map(card => {
+      return { cID: card };
+    });
 
-        await prisma.session.update({ 
-            where: { userId: DBUser.id }, 
-            data: newData 
-        });
-        
-        res.send({
-            turnNo: newData.turnNo,
-            cards: newData.cards
-        });
-    console.log("done!")
+    newData.cards = { connect: newData.cards };
+
+    await prisma.session.update({
+      where: { userId: DBUser.id },
+      data: newData,
+    });
+
+    res.send({
+      turnNo: newData.turnNo,
+      cards: newData.cards,
+    });
+    console.log('done!');
   } else {
     res.send({
       error: 'You must be sign in to view the protected content on this page.',
@@ -51,5 +60,5 @@ export default async (req, res) => {
 };
 
 function rand(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
