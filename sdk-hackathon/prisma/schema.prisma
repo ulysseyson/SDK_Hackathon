@@ -11,11 +11,14 @@ datasource db {
 }
 
 model User {
-  uid     Int       @id @default(autoincrement())
-  github  String    @unique
-  posts   Post[] // 생성 post 배열
-  Session Session[]
-  Account Account[]
+  uid           Int       @id @default(autoincrement())
+  github        String    @unique
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  posts         Post[] // 생성 post 배열
+  Session       Session[]
+  Account       Account[]
 }
 
 model Post {
