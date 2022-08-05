@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
-// import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { PrismaAdapter } from '../../../prisma/adapter';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+// import { PrismaAdapter } from '../../../prisma/adapter';
 import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 import path from 'path';

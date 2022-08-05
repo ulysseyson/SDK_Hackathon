@@ -1,15 +1,10 @@
 export function PrismaAdapter(p) {
   return {
     createUser: data => {
-      for (const key in data) {
-        if (data[key]) {
-          console.log('Found: ', key, data[key]);
-        }
-      }
-      delete data.image;
-      data.id = data.name;
+      // delete data.image;
+      // data.id = data.name;
       const newData = { id: data.name, ...data };
-      console.log(newData);
+      // console.log(newData);
       p.user.create({ data: newData });
     },
     getUser: id => p.user.findUnique({ where: { id } }),

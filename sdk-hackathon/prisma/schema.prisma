@@ -13,13 +13,14 @@ datasource db {
 model User {
   //uid           Int       @id @default(autoincrement())
   id            String    @id @default(cuid())
+  image         String
   //github        String    @unique
   name          String?
   email         String?   @unique
   emailVerified DateTime?
   posts         Post[] // 생성 post 배열
-  Session       Session[]
-  Account       Account[]
+  sessions      Session[]
+  accounts      Account[]
 }
 
 model Post {
@@ -32,15 +33,17 @@ model Post {
 }
 
 model Card {
-  cID     Int    @id @default(autoincrement())
-  url     String // image URL 
-  desc    String
-  Post    Post?  @relation(fields: [postPid], references: [pid])
-  postPid Int?
+  cID       Int      @id @default(autoincrement())
+  url       String // image URL 
+  desc      String
+  post      Post?    @relation(fields: [postPid], references: [pid], onDelete: Cascade)
+  postPid   Int?
+  session   Session? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId String?
 }
 
 // model Session {
-//   sessionID Int    @id @default(autoincrement())
+// sessionID Int    @id @default(autoincrement())
 //   turnNo Int
 //   isPlaying Boolean
 //   cards Card[]
@@ -52,6 +55,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  turnNo       Int?
+  cards        Card[]
 }
 
 model Account {
