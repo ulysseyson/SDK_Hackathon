@@ -57,6 +57,7 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   turnNo       Int?
   cards        Card[]
+  isPlaying    Boolean @default(false)
 }
 
 model Account {

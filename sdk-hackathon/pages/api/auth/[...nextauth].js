@@ -9,7 +9,7 @@ dotenv.config({ path: path.resolve('..', '..', '..', '.env') });
 
 const prisma = new PrismaClient();
 
-const options = {
+const authOptions = {
   // Configure one or more authentication providers
   adapter: new PrismaAdapter(prisma),
   providers: [
@@ -24,4 +24,5 @@ const options = {
   secret: process.env.AUTH_SECRET,
 };
 
-export default NextAuth(options);
+export default NextAuth(authOptions);
+export { authOptions };
