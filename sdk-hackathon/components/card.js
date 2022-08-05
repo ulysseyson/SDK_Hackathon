@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const Card = (props) => {
-    console.log(props.nextTurn);
+    // console.log(props.nextTurn);
     // axios
     //     .get("/api/card/selectCard",{
     //         params : {
@@ -31,6 +31,7 @@ const Card = (props) => {
                     justify-content : center;
                     align-items: center;
                     z-index : 99;
+                    margin : 5px;
                 }
                 .card-border:hover {
                     padding : 20px;

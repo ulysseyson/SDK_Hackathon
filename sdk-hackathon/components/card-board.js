@@ -2,9 +2,39 @@ import { execOnce } from "next/dist/shared/lib/utils"
 import { useEffect, useState } from "react"
 import Card from "./card"
 
+let easing = [0.6, -0.05, 0.01, 0.99];
+
+const fadeInUp = {
+    initial: {
+      y: 60,
+      opacity: 0,
+      transition: { duration: 0.6, ease: easing }
+    },
+    animate: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: easing
+      }
+   }
+};
+
+const stagger = {
+    animate: {
+        transition: {
+        staggerChildren: 0.1
+        }
+    }
+};
+
 const CardBoard = (props) => {
-    console.log(props.currentCards);
-    if(props.isSelecting && props.currentCards !== undefined){
+    // console.log(props.currentCards);
+    // const animation = () => {
+
+    // }
+    setTimeout(()=>{console.log("dfdf")}, 30000);
+    if(props.currentCards !== undefined){
 
         return (
             <div className="page">
@@ -14,19 +44,19 @@ const CardBoard = (props) => {
                             cardNum = {1}
                             setSelectedCards={props.setSelectedCards}
                             desc= {props.currentCards.card[0].desc}
-                            url = {props.url}
+                            url = {props.currentCards.card[0].url}
                             nextTurn={props.nextTurn}></Card>
                 <Card setIsSelecting={props.setIsSelecting} 
                             cardNum = {2}
                             setSelectedCards={props.setSelectedCards}
                             desc= {props.currentCards.card[0].desc}
-                            url = {props.url}
+                            url = {props.currentCards.card[1].url}
                             nextTurn={props.nextTurn}></Card>
                 <Card setIsSelecting={props.setIsSelecting} 
                             cardNum = {3}
                             setSelectedCards={props.setSelectedCards}
                             desc= {props.currentCards.card[0].desc}
-                            url = {props.url}
+                            url = {props.currentCards.card[2].url}
                             nextTurn={props.nextTurn}></Card>
             </div>
             <style jsx>{`
