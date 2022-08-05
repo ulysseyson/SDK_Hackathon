@@ -8,8 +8,10 @@ export default async (req, res) => {
   const session = await unstable_getServerSession(req, res, authOptions);
   if (session) {
     const { user } = session;
+    const DBUser = await prisma.user.findFirst({ where: { name: user.id } });
     const DBSession = await prisma.session.findFirst({
-      where: { id: user.id },
+      where: { userId: DBUser.id },
+      include: { cards: true },
     });
 
     // 세션 기본값 설정
@@ -19,8 +21,7 @@ export default async (req, res) => {
     if (newData.isPlaying === null) newData.isPlaying = false;
     if (newData.cards === null) newData.cards = [];
 
-    await prisma.session.updateMany({ where: { id: user.id }, data: newData });
-
+    await prisma.session.updateMany({ where: { userId: DBUser.id }, data: newData });
     res.send({
       turnNo: newData.turnNo,
       isPlaying: newData.isPlaying,
