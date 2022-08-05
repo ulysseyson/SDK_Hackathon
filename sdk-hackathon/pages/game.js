@@ -65,7 +65,7 @@ const game = ({cards}) => {
             .catch((err) =>{
                 console.log(err);
             })
-            .
+            
         setTurnNo((prev) => prev+1)
     }
 
