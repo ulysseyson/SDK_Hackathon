@@ -1,10 +1,11 @@
-import '../styles/globals.css';
-import { Provider } from 'next-auth/client';
-
-export default function MyApp({ Component, pageProps }) {
+import { SessionProvider } from 'next-auth/react';
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   return (
-    <Provider session={pageProps.session}>
+    <SessionProvider session={session}>
       <Component {...pageProps} />
-    </Provider>
+    </SessionProvider>
   );
 }

@@ -14,6 +14,17 @@ const options = {
     // ...add more providers here
   ],
   database: process.env.DATABASE_URL,
+  debug: process.env.NODE_ENV === 'development',
+  secret: process.env.AUTH_SECRET,
+  jwt: {
+    secret: process.env.JWT_SECRET,
+  },
+  callbacks: {
+    async jwt({ token }) {
+      token.userRole = 'admin';
+      return token;
+    },
+  },
 };
 
 export default NextAuth(options);
