@@ -47,6 +47,7 @@ const game = ({ cards }) => {
       .catch(err => {
         console.log(err);
       });
+    setTurnNo(1);
   }, [turnNo]);
 
   const nextTurn = () => {
@@ -66,7 +67,9 @@ const game = ({ cards }) => {
   };
 
   if (isPlaying) {
-    if (turnNo === 10) setIsPlaying(prev => !prev);
+    if (turnNo === 10) {
+      setIsPlaying(prev => !prev);
+    }
     return (
       <div>
         <LoginBtn />
