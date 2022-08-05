@@ -35,7 +35,6 @@ model Post {
 }
 
 model UsersOnPosts {
-  id     Int 
   post    Post   @relation(fields: [postId], references: [id])
   postId  Int // relation scalar field (used in the `@relation` attribute above)
   user    User   @relation(fields: [userId], references: [id])
