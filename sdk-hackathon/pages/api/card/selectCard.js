@@ -19,8 +19,9 @@ export default async (req, res) => {
     const newData = DBSession;
     newData.turnNo++;
     newData.cards = { connect: newData.cards };
-    const arrno = [1, 2, 3];
-    if (arrno.filter(cardNo)) {
+    const arr = [1, 2, 3];
+
+    if (arr.some(cardNo)) {
         await prisma.session.update({
         where: { userId: DBUser.id },
         data: newData,
