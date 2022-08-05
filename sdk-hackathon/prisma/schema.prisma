@@ -12,8 +12,9 @@ datasource db {
 
 model User {
   uid Int @default(autoincrement()) @id
-  nickname String
-  password String
+  //nickname String
+  //password String
+  github String
   posts Post[]
 }
 
