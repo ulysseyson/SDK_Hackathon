@@ -11,8 +11,9 @@ datasource db {
 }
 
 model User {
-  uid           Int       @id @default(autoincrement())
-  github        String    @unique
+  //uid           Int       @id @default(autoincrement())
+  id            String    @id @default(cuid())
+  //github        String    @unique
   name          String?
   email         String?   @unique
   emailVerified DateTime?
@@ -50,7 +51,7 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [github], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -67,7 +68,7 @@ model Account {
   id_token          String? @db.Text
   session_state     String?
 
-  user User @relation(fields: [userId], references: [github], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
