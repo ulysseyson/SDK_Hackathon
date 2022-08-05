@@ -1,25 +1,22 @@
 import axios from "axios";
 
 const Card = (props) => {
-
-    const selectCard = () => {
-        props.setIsOn(false)
-        axios
-        .get("/api/card/selectCard",{
-            params : {
-                cardNo : props.cardNumber
-            }
-        })
-        .then((res) => {
+    console.log(props.nextTurn);
+    // axios
+    //     .get("/api/card/selectCard",{
+    //         params : {
+    //             cardNo : props.cardNum
+    //         }
+    //     })
+    //     .then((res) => {
             
-        })
-        .catch((err) =>{
-            console.log(err);
-        })
-    }
+    //     })
+    //     .catch((err) =>{
+    //         console.log(err);
+    //     })
         
-        return (
-        <div className="card-border" onClick={selectCard}>
+    return (
+        <div className="card-border" onClick={props.nextTurn}>
             <div className="card">
                 <img src={props.url} width="220vw" height="160vh"></img>
                 <div className="desc">{props.desc}</div>
@@ -33,6 +30,7 @@ const Card = (props) => {
                     height : 320px;
                     justify-content : center;
                     align-items: center;
+                    z-index : 99;
                 }
                 .card-border:hover {
                     padding : 20px;

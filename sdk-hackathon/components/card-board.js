@@ -1,44 +1,54 @@
-import axios from "axios";
 import { execOnce } from "next/dist/shared/lib/utils"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Card from "./card"
 
 const CardBoard = (props) => {
-    const [isOn, setIsOn] = useState(props.isSelecting);
+    console.log(props.currentCards);
+    if(props.isSelecting && props.currentCards !== undefined){
 
-    axios
-        .get("/api/card/getCurrentCards")
-        .then((res) => {
-            
-        })
-    return (
-        <div className="page">
-        <div className="cardboard">
-            <div>turn {props.turnNo}</div>
-            <Card setIsOn = {setIsOn} desc= "welcome" url = "https://image.imnews.imbc.com/news/2021/world/article/__icsFiles/afieldfile/2021/09/13/p20210913_7.jpg"></Card>
-            <Card setIsOn = {setIsOn} desc= "welcome" url = "https://image.imnews.imbc.com/news/2021/world/article/__icsFiles/afieldfile/2021/09/13/p20210913_7.jpg"></Card>
-            <Card setIsOn = {setIsOn} desc= "welcome" url = "https://image.imnews.imbc.com/news/2021/world/article/__icsFiles/afieldfile/2021/09/13/p20210913_7.jpg"></Card>
+        return (
+            <div className="page">
+            <div className="cardboard">
+                <div>{props.turnNo}</div>
+                <Card setIsSelecting={props.setIsSelecting} 
+                            cardNum = {1}
+                            setSelectedCards={props.setSelectedCards}
+                            desc= {props.currentCards.card[0].desc}
+                            url = {props.url}
+                            nextTurn={props.nextTurn}></Card>
+                <Card setIsSelecting={props.setIsSelecting} 
+                            cardNum = {2}
+                            setSelectedCards={props.setSelectedCards}
+                            desc= {props.currentCards.card[0].desc}
+                            url = {props.url}
+                            nextTurn={props.nextTurn}></Card>
+                <Card setIsSelecting={props.setIsSelecting} 
+                            cardNum = {3}
+                            setSelectedCards={props.setSelectedCards}
+                            desc= {props.currentCards.card[0].desc}
+                            url = {props.url}
+                            nextTurn={props.nextTurn}></Card>
+            </div>
+            <style jsx>{`
+                .page {
+                    display : flex;
+                    align-items : center;
+                    justify-content : center;
+                    height : 80%;
+                }
+                .cardboard {
+                    display : flex;
+                    flex-axis : row;
+                    justify-content : space-around;
+                    align-items : center;
+                    width : 1000px;
+                    height : 400px;
+                    background-color : gray;
+                }
+                `}</style>
         </div>
-        <style jsx>{`
-            .page {
-                display : flex;
-                align-items : center;
-                justify-content : center;
-                height : 80%;
-            }
-            .cardboard {
-                display : flex;
-                flex-axis : row;
-                justify-content : space-around;
-                align-items : center;
-                width : 1000px;
-                height : 400px;
-                background-color : gray;
-            }
-            `}</style>
-    </div>
-    )
-
+        )
+    }
 }
 
 export default CardBoard;
