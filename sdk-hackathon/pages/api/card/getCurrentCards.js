@@ -13,6 +13,8 @@ export default async (req, res) => {
       where: { userId: DBUser.id },
     });
 
+    console.log(session);
+    
     const newData = DBSession;
     const cards = []
 
@@ -22,15 +24,19 @@ export default async (req, res) => {
     var i = 0
         while(i < 3) {
             var cardNo = rand(1, 1000);
-            var card = await prisma.Card.findUnique({ where: {cID: cardNo}});
-            cards.push(card);
+            var card = await prisma.Card.findFirst({ where: {cID: cardNo}});
+            card.sessionId = DBUser.id;
+            cards.push(card.cID);
             i++;
         }
         newData.turnNo += 1;
         newData.cards = cards;
+        newData.cards = { connect: newData.cards };
 
-        console.log('new : ',newData);
-        await prisma.session.updateMany({ where: { userId: DBUser.id }, data: newData });
+        await prisma.session.update({ 
+            where: { userId: DBUser.id }, 
+            data: newData 
+        });
         
         res.send({
             turnNo: newData.turnNo,
