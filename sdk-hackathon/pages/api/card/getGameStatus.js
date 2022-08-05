@@ -14,14 +14,20 @@ export default async (req, res) => {
       include: { cards: true },
     });
 
+    console.log(DBSession);
+
     // 세션 기본값 설정
     const newData = DBSession;
 
     if (newData.turnNo === null) newData.turnNo = 1;
     if (newData.isPlaying === null) newData.isPlaying = false;
-    if (newData.cards === null) newData.cards = [];
+    if (newData.cards === null || true) newData.cards = [];
+    newData.cards = { connect: newData.cards };
 
-    await prisma.session.updateMany({ where: { userId: DBUser.id }, data: newData });
+    await prisma.session.update({
+      where: { userId: DBUser.id },
+      data: newData,
+    });
     res.send({
       turnNo: newData.turnNo,
       isPlaying: newData.isPlaying,
