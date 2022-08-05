@@ -43,20 +43,20 @@ const CardBoard = (props) => {
                 <Card setIsSelecting={props.setIsSelecting} 
                             cardNum = {1}
                             setSelectedCards={props.setSelectedCards}
-                            desc= {props.currentCards.card[0].desc}
-                            url = {props.currentCards.card[0].url}
+                            desc= {props.currentCards[0].desc}
+                            url = {props.currentCards[0].url}
                             nextTurn={props.nextTurn}></Card>
                 <Card setIsSelecting={props.setIsSelecting} 
                             cardNum = {2}
                             setSelectedCards={props.setSelectedCards}
-                            desc= {props.currentCards.card[0].desc}
-                            url = {props.currentCards.card[1].url}
+                            desc= {props.currentCards[1].desc}
+                            url = {props.currentCards[1].url}
                             nextTurn={props.nextTurn}></Card>
                 <Card setIsSelecting={props.setIsSelecting} 
                             cardNum = {3}
                             setSelectedCards={props.setSelectedCards}
-                            desc= {props.currentCards.card[0].desc}
-                            url = {props.currentCards.card[2].url}
+                            desc= {props.currentCards[2].desc}
+                            url = {props.currentCards[2].url}
                             nextTurn={props.nextTurn}></Card>
             </div>
             <style jsx>{`
