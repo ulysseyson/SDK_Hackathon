@@ -38,7 +38,6 @@ const game = ({cards}) => {
             .catch((err) => {
                 console.log(err);
             })
-        setCurrentCards(cards)
         axios
             .get("/api/card/getGameStatus")
             .then((res) => {
@@ -72,7 +71,6 @@ const game = ({cards}) => {
     if(isPlaying){
         if(turnNo === 10) setIsPlaying((prev) => !prev)
         return (
-            
             <div>
                 <LoginBtn />
                 <CardBoard  setIsSelecting={setIsSelecting}
