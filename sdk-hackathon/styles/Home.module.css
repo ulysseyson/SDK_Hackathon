@@ -1,7 +1,9 @@
 .container {
   padding: 0 2rem;
 }
-
+#__next {
+  height: 100vh;
+}
 .main {
   min-height: 100vh;
   padding: 4rem 0;

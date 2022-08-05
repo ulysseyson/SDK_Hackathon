@@ -1,32 +1,24 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 
-const axios = require("axios");
-
-const options = {
-  method: 'GET',
-  url: 'https://hargrimm-wikihow-v1.p.rapidapi.com/steps',
-  params: {count: '3'},
-  headers: {
-    'X-RapidAPI-Key': '81410a061bmsh3b09b36b54c6225p173c69jsnd9a66709d32a',
-    'X-RapidAPI-Host': 'hargrimm-wikihow-v1.p.rapidapi.com'
-  }
-};
-
-async function getAPI () {
-    const { data } = await axios.request(options)
-    // console.log(data);
-    return data;
-}
 
 const game = () => {
     const [text, setText] = useState();
 
-    useEffect(() => {
-        const tmp = getAPI();
-        setText(tmp);
-        console.log(text);  
-    }, []);
+    useEffect(()=> {
+        axios
+        .get('/api/card/callCard')
+        .then((res) => {
+            console.log(res.data);
+            setText(res.data)
+        })
+        .catch((err) => {
+            console.log(err);
+            return false;
+        })
+    }, [])
     
+
     return (
         <div>
             {

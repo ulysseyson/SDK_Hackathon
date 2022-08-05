@@ -6,6 +6,15 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <Component {...pageProps} />
+      <style jsx global>{`
+        html,
+        body,
+        body,
+        #__next,
+        #__next > div {
+          height: 100%;
+        }
+      `}</style>
     </SessionProvider>
   );
 }
