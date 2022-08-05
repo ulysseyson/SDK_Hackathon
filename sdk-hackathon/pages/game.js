@@ -14,14 +14,19 @@ const options = {
 
 async function getAPI () {
     const { data } = await axios.request(options)
-    //console.log(data);
+    // console.log(data);
     return data;
 }
 
 const game = () => {
+    const [text, setText] = useState();
 
-    const text = getAPI();
-    console.log(text);
+    useEffect(() => {
+        const tmp = getAPI();
+        setText(tmp);
+        console.log(text);  
+    }, []);
+    
     return (
         <div>
             {
