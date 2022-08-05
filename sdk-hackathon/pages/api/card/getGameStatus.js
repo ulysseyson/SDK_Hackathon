@@ -11,6 +11,7 @@ export default async (req, res) => {
     const DBUser = await prisma.user.findFirst({ where: { name: user.id } });
     const DBSession = await prisma.session.findFirst({
       where: { userId: DBUser.id },
+      include: { cards: true },
     });
 
     // 세션 기본값 설정
