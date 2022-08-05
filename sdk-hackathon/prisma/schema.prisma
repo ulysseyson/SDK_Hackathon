@@ -11,18 +11,26 @@ datasource db {
 }
 
 model User {
-  uid Int @default(autoincrement()) @id
+  uid    Int    @id @default(autoincrement())
   //nickname String
   //password String
   github String
-  posts Post[]
+  posts  Post[] // 생성 post 배열
 }
 
 model Post {
-  pid Int @default(autoincrement()) @id
-  txt String
-  star Int
-  starID User[]
-  time DateTime
+  pid    Int      @id @default(autoincrement())
+  txt    String // 생성 문장
+  star   Int  // 좋아요
+  starID User[] // 좋아요를 누른 ID 배열
+  cards  Card[] // Card 배열
+  time   DateTime
+}
 
+model Card {
+  cID     Int    @id @default(autoincrement())
+  url String  // image URL 
+  desc    String
+  Post    Post?  @relation(fields: [postPid], references: [pid])
+  postPid Int?
 }
