@@ -12,10 +12,7 @@ datasource db {
 
 model User {
   uid     Int       @id @default(autoincrement())
-  userId String @unique
-  //nickname String
-  //password String
-  github  String
+  github  String @unique
   posts   Post[] // 생성 post 배열
   Session Session[]
 }
@@ -49,5 +46,5 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  user         User     @relation(fields: [sid], references: [userId], onDelete: Cascade)
+  user         User     @relation(fields: [sid], references: [github], onDelete: Cascade)
 }
