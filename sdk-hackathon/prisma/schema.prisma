@@ -35,11 +35,11 @@ model Post {
 }
 
 model UsersOnPosts {
+  id     Int 
   post    Post   @relation(fields: [postId], references: [id])
   postId  Int // relation scalar field (used in the `@relation` attribute above)
   user    User   @relation(fields: [userId], references: [id])
   userId  String // relation scalar field (used in the `@relation` attribute above)
-  likedBy String
 
   @@id([postId, userId])
 }
@@ -54,12 +54,6 @@ model Card {
   sessionId String?
 }
 
-// model Session {
-// sessionID Int    @id @default(autoincrement())
-//   turnNo Int
-//   isPlaying Boolean
-//   cards Card[]
-// }
 
 model Session {
   id           String   @id @default(cuid())
