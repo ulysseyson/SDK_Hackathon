@@ -1,20 +1,11 @@
-import Head from 'next/head';
-import Image from 'next/image';
 import styles from '../styles/Home.module.css';
-import Link from 'next/link';
+import LoginBtn from '../components/login-btn';
 
 export default function Home() {
   return (
     <div>
-      <Link href="api/auth/signin">
-        <a>Sign In</a>
-      </Link>
-      <Link href="api/auth/signout">
-        <a>Sign Out</a>
-      </Link>
-      <Link href="/game">
-        <a>Start!</a>
-      </Link>
+      <LoginBtn />
+      <Link href="/game">Start!</Link>
     </div>
   );
 }
