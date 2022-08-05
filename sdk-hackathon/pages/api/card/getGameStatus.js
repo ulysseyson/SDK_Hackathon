@@ -8,8 +8,9 @@ export default async (req, res) => {
   const session = await unstable_getServerSession(req, res, authOptions);
   if (session) {
     const { user } = session;
+    const DBUser = await prisma.user.findFirst({ where: { name: user.id } });
     const DBSession = await prisma.session.findFirst({
-      where: { id: user.id },
+      where: { userId: DBUser.id },
     });
 
     // 세션 기본값 설정

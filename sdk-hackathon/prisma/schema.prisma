@@ -14,29 +14,32 @@ model User {
   //uid           Int       @id @default(autoincrement())
   id            String    @id @default(cuid())
   image         String
-  //github        String    @unique
   name          String?
   email         String?   @unique
   emailVerified DateTime?
-  posts         Post[] // 생성 post 배열
   sessions      Session[]
   accounts      Account[]
+  createdPosts  Post[]    @relation("Post_createdPosts")
+  likedPosts    Post[]    @relation("Post_likedPosts")
 }
 
 model Post {
-  pid    Int      @id @default(autoincrement())
-  txt    String // 생성 문장
-  star   Int // 좋아요
-  starID User[] // 좋아요를 누른 ID 배열
-  cards  Card[] // Card 배열
-  time   DateTime
+  id                  Int      @id @default(autoincrement())
+  txt                 String // 생성 문장
+  star                Int // 좋아요
+  cards               Card[] // Card 배열
+  time                DateTime
+  createdBy           String
+  User_Post_createdBy User     @relation("Post_createdPosts", fields: [createdBy], references: [id])
+  likedBy             String
+  User_Post_likedBy   User     @relation("Post_likedPosts", fields: [likedBy], references: [id])
 }
 
 model Card {
   cID       Int      @id @default(autoincrement())
   url       String // image URL 
   desc      String
-  post      Post?    @relation(fields: [postPid], references: [pid], onDelete: Cascade)
+  post      Post?    @relation(fields: [postPid], references: [id], onDelete: Cascade)
   postPid   Int?
   session   Session? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   sessionId String?
@@ -57,7 +60,7 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   turnNo       Int?
   cards        Card[]
-  isPlaying    Boolean @default(false)
+  isPlaying    Boolean  @default(false)
 }
 
 model Account {
