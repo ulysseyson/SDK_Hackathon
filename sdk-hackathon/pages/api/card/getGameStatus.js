@@ -20,7 +20,6 @@ export default async (req, res) => {
     if (newData.cards === null) newData.cards = [];
 
     await prisma.session.updateMany({ where: { id: user.id }, data: newData });
-
     res.send({
       turnNo: newData.turnNo,
       isPlaying: newData.isPlaying,
