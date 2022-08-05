@@ -1,30 +1,32 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import CardBoard from "../components/card-board";
+import LoginBtn from "../components/login-btn"
 
 const game = () => {
-    const [text, setText] = useState();
+    const [selectedCards, setSelectedCards] = useState([]);
+    const [turnNo, setTurnNo] = useState(1);
+    const [isPlaying, setIsPlaying] = useState(true);
+    const [isSelecting,setIsSelecting] =useState(true);
+    let i = 1
+    if(isSelecting){
+        return (
 
-    useEffect(()=> {
-        axios
-        .get('/api/card/callCard')
-        .then((res) => {
-            console.log(res.data);
-            setText(res.data)
-        })
-        .catch((err) => {
-            console.log(err);
-            return false;
-        })
-    }, [])
-    
-
-    return (
-        <div>
-            {
-            }
-        </div>
-    )
+            <div>
+                <LoginBtn />
+                <CardBoard  setIsSelecting={setIsSelecting}
+                            turnNo = {turnNo} setTurnNo={setTurnNo}
+                            setSelectedCards={setSelectedCards}/>
+            </div>
+        )
+    }
+    else {
+        return (
+            <div>
+                <LoginBtn />
+            </div>
+        )
+    }
 }
 
 export default game

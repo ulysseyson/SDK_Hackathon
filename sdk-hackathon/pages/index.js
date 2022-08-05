@@ -2,24 +2,26 @@ import styles from '../styles/Home.module.css';
 import LoginBtn from '../components/login-btn';
 import Link from 'next/link';
 import axios from 'axios';
-import { useSession } from 'next-auth/react';
-import { Router } from 'next/router';
+import { useRouter } from 'next/router';
+
 
 export default function Home() {
-  const {data :  session} = useSession();
+  
+  const router = useRouter();
   const gameStart = () => {
+    router.push('/game')
     axios
     .get("/api/card/gameStart", {
       method : "GET"
     })
     .then((res) => {
-      if (res.isLogin === true) Router.push('/game')
+      if (res.isLogin === true) router.push('/game')
     })
   }
   return (
     <div className='page'>
       <LoginBtn />
-      <Link href="/game"><a onClick={gameStart} className='start-button'>Start!</a></Link>
+      <a onClick={gameStart} className='start-button'>Start!</a>
       <div></div>
       <style jsx global>{`
         
