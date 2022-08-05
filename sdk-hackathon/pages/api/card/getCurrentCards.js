@@ -8,15 +8,14 @@ export default async (req, res) => {
   const session = await unstable_getServerSession(req, res, authOptions);
   if (session) {
     const { user } = session;
+    const DBUser = await prisma.user.findFirst({ where: { name: user.id } });
     const DBSession = await prisma.session.findFirst({
-      where: { userId: user.id },
+      where: { userId: DBUser.id },
     });
-    // const turnNo = DBSession.turnNo;
-    // const isPlaying = DBSession.isPlaying;
+
     const newData = DBSession;
     const cards = []
 
-    console.log(user);
     if (!newData.isPlaying){
         newData.isPlaying = true;
     }
@@ -30,9 +29,9 @@ export default async (req, res) => {
         newData.turnNo += 1;
         newData.cards = cards;
 
-        console.log("user id : ",user.id);
-        await prisma.session.updateMany({ where: { userId: user.id }, data: newData });
-
+        console.log('new : ',newData);
+        await prisma.session.updateMany({ where: { userId: DBUser.id }, data: newData });
+        
         res.send({
             turnNo: newData.turnNo,
             cards: newData.cards
