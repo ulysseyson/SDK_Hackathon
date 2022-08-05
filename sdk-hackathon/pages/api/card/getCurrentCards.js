@@ -27,12 +27,13 @@ export default async (req, res) => {
     const allCardsIds = allCards.map(card => card.cID);
     const cardCIDMin = allCardsIds[0];
     const cardCIDMax = allCardsIds[allCardsIds.length - 1];
-
+    const cardRes = [];
     while (i < 3) {
       var cardNo = rand(cardCIDMin, cardCIDMax);
       var card = await prisma.Card.findFirst({ where: { cID: cardNo } });
       card.sessionId = DBUser.id;
       cards.push(card.cID);
+      cardRes.push({ cardNum: i, card: { desc: card.desc, url: card.url } });
       i++;
     }
     newData.turnNo += 1;
@@ -49,7 +50,7 @@ export default async (req, res) => {
 
     res.send({
       turnNo: newData.turnNo,
-      cards: newData.cards,
+      cards: cardRes,
     });
     console.log('done!');
   } else {

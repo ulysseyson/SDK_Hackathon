@@ -13,26 +13,34 @@ export default async (req, res) => {
       where: { userId: DBUser.id },
       include: { cards: true },
     });
-    const cardNo = res.cardNo;
+    const cardNoStr = req.query.cardNo;
 
-    // 세션 기본값 설정
-    const newData = DBSession;
-    newData.turnNo++;
-    newData.cards = { connect: newData.cards };
-    const arr = [1, 2, 3];
-
-    if (arr.some(cardNo)) {
-        await prisma.session.update({
-        where: { userId: DBUser.id },
-        data: newData,
-        });
-        res.send(200);
+    const arr = ['1', '2', '3'];
+    if (arr.indexOf(cardNoStr) == -1) {
+      res.send(400);
+      return;
     }
-    else {
-        res.send(400);
-  } 
-  
-}else {
+    const cardNo = parseInt(cardNoStr);
+
+    const newData = { turnNo: DBSession.turnNo, cards: DBSession.cards };
+    newData.turnNo++;
+    newData.cards = {
+      connect: newData.cards.map(card => {
+        return { cid: card.cID };
+      }),
+    };
+
+    console.log(newData.cards);
+
+    await prisma.session.update({
+      where: { userId: DBUser.id },
+      data: newData,
+    });
+
+    res.send({
+      msg: 'done',
+    });
+  } else {
     res.send({
       error: 'You must be sign in to view the protected content on this page.',
     });

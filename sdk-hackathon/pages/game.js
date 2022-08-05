@@ -1,9 +1,9 @@
-import axios from "axios";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import CardBoard from "../components/card-board";
-import LoginBtn from "../components/login-btn"
-import Ending from "../components/Ending"
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import CardBoard from '../components/card-board';
+import LoginBtn from '../components/login-btn';
+import Ending from '../components/Ending';
 
 // export const getServerSideProps = async() => {
 //     const Cards = {
@@ -20,78 +20,76 @@ import Ending from "../components/Ending"
 //         props: {cards : Cards}
 //     }
 // }
-const game = ({cards}) => {
-    const [selectedCards, setSelectedCards] = useState([]);
-    const [currentCards, setCurrentCards] = useState();
-    const [turnNo, setTurnNo] = useState(1);
-    const [isPlaying, setIsPlaying] = useState(true);
-    const [isSelecting,setIsSelecting] = useState(true);
-    const [cardNum, setCardNum] = useState(0)
-    const router = useRouter();
+const game = ({ cards }) => {
+  const [selectedCards, setSelectedCards] = useState([]);
+  const [currentCards, setCurrentCards] = useState();
+  const [turnNo, setTurnNo] = useState(1);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isSelecting, setIsSelecting] = useState(true);
+  const [cardNum, setCardNum] = useState(0);
+  const router = useRouter();
+  // {"turnNo":13,"cards":[{"cardNum":0,"card":{"cID":2669}},{"cardNum":1,"card":{"cID":2624}},{"cardNum":2,"card":{"cID":2860}}]}
+  useEffect(() => {
+    axios
+      .get('/api/card/getCurrentCards')
+      .then(res => {
+        setCurrentCards(res.data.cards);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    axios
+      .get('/api/card/getGameStatus')
+      .then(res => {
+        setTurnNo(res.data.turnNo);
+        setIsPlaying(res.data.isPlaying);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [turnNo]);
 
-    useEffect(() => {
-        axios
-            .get("/api/card/getCurrentCards")
-            .then((res) => {
-                setCurrentCards(res.cards)
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        axios
-            .get("/api/card/getGameStatus")
-            .then((res) => {
-                setTurnNo(res.turnNo)
-                setIsPlaying(res.isPlaying)
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        
-    }, [turnNo]);
+  const nextTurn = () => {
+    console.log('dd');
+    axios
+      .get('/api/card/selectCard', {
+        params: {
+          cardNo: cardNum,
+        },
+      })
+      .then(res => {})
+      .catch(err => {
+        console.log(err);
+      });
 
-    const nextTurn = () => {
-        console.log("dd");
-        axios
-            .get("/api/card/selectCard", {
-                params : {
-                    cardNo : cardNum
-                }
-            })
-            .then((res) => {
+    setTurnNo(prev => prev + 1);
+  };
 
-            })
-            .catch((err) =>{
-                console.log(err);
-            })
-            
-        setTurnNo((prev) => prev+1)
-    }
+  if (isPlaying) {
+    if (turnNo === 10) setIsPlaying(prev => !prev);
+    return (
+      <div>
+        <LoginBtn />
+        <CardBoard
+          setIsSelecting={setIsSelecting}
+          currentCards={currentCards}
+          isSelecting={isSelecting}
+          turnNo={turnNo}
+          nextTurn={nextTurn}
+          setCardNum={setCardNum}
+          setSelectedCards={setSelectedCards}
+        />
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <Ending selectedCards={selectedCards}></Ending>
+      </div>
+    );
+  }
 
-    if(isPlaying){
-        if(turnNo === 10) setIsPlaying((prev) => !prev)
-        return (
-            <div>
-                <LoginBtn />
-                <CardBoard  setIsSelecting={setIsSelecting}
-                            currentCards={currentCards}
-                            isSelecting={isSelecting}
-                            turnNo = {turnNo}
-                            nextTurn={nextTurn}
-                            setCardNum={setCardNum}
-                            setSelectedCards={setSelectedCards}/>
-            </div>
-        )
-    }
-    else{
-        return (
-            <div>
-                <Ending selectedCards={selectedCards}></Ending>
-            </div>
-        )
-    }
-    
-    //else router.push('/leaderBoard')
-}
+  //else router.push('/leaderBoard')
+};
 
-export default game
+export default game;
