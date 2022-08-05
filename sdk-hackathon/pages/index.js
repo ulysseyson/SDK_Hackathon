@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div>
       <LoginBtn />
-      <p>Start!</p>
+      <Link href="/game">Start!</Link>
     </div>
   );
 }
