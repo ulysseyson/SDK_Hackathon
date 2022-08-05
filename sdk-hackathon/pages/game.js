@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import CardBoard from "../components/card-board";
 import LoginBtn from "../components/login-btn"
+import Ending from "../components/Ending"
 
 export const getServerSideProps = async() => {
     const Cards = {
@@ -23,8 +24,9 @@ const game = ({cards}) => {
     const [selectedCards, setSelectedCards] = useState([]);
     const [currentCards, setCurrentCards] = useState();
     const [turnNo, setTurnNo] = useState(1);
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(true);
     const [isSelecting,setIsSelecting] = useState(true);
+    const [cardNum, setCardNum] = useState(0)
     const router = useRouter();
 
     useEffect(() => {
@@ -37,26 +39,38 @@ const game = ({cards}) => {
         //         console.log(err);
         //     })
         setCurrentCards(cards)
-        axios
-            .get("/api/card/getGameStatus")
-            .then((res) => {
-                setTurnNo(res.turnNo)
-                setIsPlaying(res.isPlaying)
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+        // axios
+        //     .get("/api/card/getGameStatus")
+        //     .then((res) => {
+        //         setTurnNo(res.turnNo)
+        //         setIsPlaying(res.isPlaying)
+        //     })
+        //     .catch((err) => {
+        //         console.log(err);
+        //     })
         
     }, [turnNo]);
 
     const nextTurn = () => {
         console.log("dd");
+        axios
+            .get("/api/card/selectCard", {
+                params : {
+                    cardNo : cardNum
+                }
+            })
+            .then((res) => {
+
+            })
+            .catch((err) =>{
+                console.log(err);
+            })
+            .
         setTurnNo((prev) => prev+1)
     }
 
     if(isPlaying){
-        
-
+        if(turnNo === 10) setIsPlaying((prev) => !prev)
         return (
             
             <div>
@@ -66,7 +80,15 @@ const game = ({cards}) => {
                             isSelecting={isSelecting}
                             turnNo = {turnNo}
                             nextTurn={nextTurn}
+                            setCardNum={setCardNum}
                             setSelectedCards={setSelectedCards}/>
+            </div>
+        )
+    }
+    else{
+        return (
+            <div>
+                <Ending selectedCards={selectedCards}></Ending>
             </div>
         )
     }

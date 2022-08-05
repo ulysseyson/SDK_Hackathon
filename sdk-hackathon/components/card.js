@@ -14,9 +14,14 @@ const Card = (props) => {
     //     .catch((err) =>{
     //         console.log(err);
     //     })
-        
+    const ff = () => {
+        props.nextTurn();
+        props.setCardNum(props.cardNum);
+    }
+    console.log(ff);
+
     return (
-        <div className="card-border" onClick={props.nextTurn}>
+        <div className="card-border" onClick={ff}>
             <div className="card">
                 <img src={props.url} width="220vw" height="160vh"></img>
                 <div className="desc">{props.desc}</div>
@@ -32,12 +37,14 @@ const Card = (props) => {
                     align-items: center;
                     z-index : 99;
                     margin : 5px;
+                    border-radius: 2em;
                 }
                 .card-border:hover {
                     padding : 20px;
                 }
                 .card {
                     background-color : brown;
+                    border-radius: 2em;
                     width: 220px;
                     height : 280px;
                 }
