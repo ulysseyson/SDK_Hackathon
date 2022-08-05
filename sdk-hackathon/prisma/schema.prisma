@@ -11,17 +11,21 @@ datasource db {
 }
 
 model User {
-  uid    Int    @id @default(autoincrement())
-  //nickname String
-  //password String
-  github String
-  posts  Post[] // 생성 post 배열
+  //uid           Int       @id @default(autoincrement())
+  id            String    @id @default(cuid())
+  //github        String    @unique
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  posts         Post[] // 생성 post 배열
+  Session       Session[]
+  Account       Account[]
 }
 
 model Post {
   pid    Int      @id @default(autoincrement())
   txt    String // 생성 문장
-  star   Int  // 좋아요
+  star   Int // 좋아요
   starID User[] // 좋아요를 누른 ID 배열
   cards  Card[] // Card 배열
   time   DateTime
@@ -29,8 +33,50 @@ model Post {
 
 model Card {
   cID     Int    @id @default(autoincrement())
-  url String  // image URL 
+  url     String // image URL 
   desc    String
   Post    Post?  @relation(fields: [postPid], references: [pid])
   postPid Int?
+}
+
+// model Session {
+//   sessionID Int    @id @default(autoincrement())
+//   turnNo Int
+//   isPlaying Boolean
+//   cards Card[]
+// }
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
