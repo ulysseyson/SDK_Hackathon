@@ -24,20 +24,17 @@ const game = ({cards}) => {
     const [currentCards, setCurrentCards] = useState();
     const [turnNo, setTurnNo] = useState(1);
     const [isPlaying, setIsPlaying] = useState(true);
-    const [isSelecting,setIsSelecting] =useState(true);
+    const [isSelecting,setIsSelecting] = useState(true);
     const router = useRouter();
 
     useEffect(() => {
-        console.log(cards);
-        console.log("DFDFDFDF");
         setCurrentCards(cards)
-    }, [turnNo]);
+    }, [isSelecting]);
 
     const nextTurn = () => {
         console.log("dd");
         setTurnNo((prev) => prev+1)
     }
-
 
  //   if(isPlaying){
         // axios
